@@ -9,9 +9,12 @@ import { fetchAuth, selectIsAuth } from "../redux/slices/auth";
 const LoginView = () => {
     const isAuth = useSelector(selectIsAuth)
     const dispatch = useDispatch(); 
+    
+      
     const {register, 
            handleSubmit, 
             formState:{errors},
+            setError,
         }  = useForm({
         defaultValues: {
             email: 'ice11@gmail.com',
@@ -23,13 +26,20 @@ const LoginView = () => {
 
     const onSubmit = (values) => {
         dispatch(fetchAuth(values));
-        
+        if (isAuth) {
+            return <Navigate to="/" />;
+        }
+        else {
+            document.getElementById("form").reset();
+            setError("email",{
+                type: "server",
+                message: "Incorrect email or passwort"
+            })
+        }
         
     }
 
-    if (isAuth) {
-        return <Navigate to="/" />;
-    }
+    
 
 
     return (
@@ -45,7 +55,7 @@ const LoginView = () => {
                         <img className="login-logo" src="https://prosklad.kz/assets/main/img/logo/prosklad-logo.svg" alt="login-logo" />
                     </Link>
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} id = "form">
                     <h1 className="text-center mb-5 login-text">Система для учета малого бизнеса</h1>
             <div className="row mb-3">
                 <div className="col-sm-10">
@@ -75,7 +85,7 @@ const LoginView = () => {
                 </div>
             </div>
             <div>
-            <button type="submit" className="btn btn-primary btn-lg">Sign in</button>
+            <button type="submit" className="btn btn-primary btn-lg">Log in</button>
             <Link className="btn btn-link text-700 btn-lg link-secondary text-decoration-none" to="/change">Forgot password?</Link>
             </div>
             <div className="border-top mt-3 pt-3 text-center reg-text fw-bolder">
