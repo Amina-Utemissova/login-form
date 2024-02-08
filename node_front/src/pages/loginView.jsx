@@ -15,6 +15,7 @@ const LoginView = () => {
            handleSubmit, 
             formState:{errors},
             setError,
+            reset,
         }  = useForm({
         defaultValues: {
             email: 'ice11@gmail.com',
@@ -26,20 +27,19 @@ const LoginView = () => {
 
     const onSubmit = (values) => {
         dispatch(fetchAuth(values));
-        if (isAuth) {
-            return <Navigate to="/" />;
-        }
-        else {
-            document.getElementById("form").reset();
-            setError("email",{
-                type: "server",
-                message: "Incorrect email or passwort"
-            })
+        if (!isAuth){
+            reset();
+        setError("email",{
+            type: "server",
+            message: "Incorrect email or passwort"
+        })
         }
         
     }
 
-    
+    if (isAuth) {
+        return <Navigate to="/" />;
+    } 
 
 
     return (
@@ -55,7 +55,7 @@ const LoginView = () => {
                         <img className="login-logo" src="https://prosklad.kz/assets/main/img/logo/prosklad-logo.svg" alt="login-logo" />
                     </Link>
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)} id = "form">
+                    <form onSubmit={handleSubmit(onSubmit)}>
                     <h1 className="text-center mb-5 login-text">Система для учета малого бизнеса</h1>
             <div className="row mb-3">
                 <div className="col-sm-10">
@@ -90,7 +90,7 @@ const LoginView = () => {
             </div>
             <div className="border-top mt-3 pt-3 text-center reg-text fw-bolder">
                 <span>New user?</span>
-                <Link className="d-block d-lg-inline text-decoration-none" to="/register"> Create a new account</Link>
+                <Link className="d-block d-lg-inline text-decoration-none" to="/auth/register"> Create a new account</Link>
             </div>
                     </form>
                     </div>

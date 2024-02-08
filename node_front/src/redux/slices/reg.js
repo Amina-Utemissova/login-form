@@ -3,8 +3,8 @@ import axios from "../../axios.js";
 
 
 
-export const fetchAuth = createAsyncThunk('auth/fetchAuth', async (params) => {
-    const { data } = await axios.post('/auth/login', params);
+export const fetchReg = createAsyncThunk('reg/fetchReg', async (params) => {
+    const { data } = await axios.post('/auth/register', params);
     return data;  
 })
 
@@ -15,32 +15,32 @@ const initialState = {
 
 
 
-const authSlice = createSlice({
-    name : 'auth',
+const regSlice = createSlice({
+    name : 'reg',
     initialState,
     extraReducers : {
 
        
 
-        [fetchAuth.pending]: (state) => {
+        [fetchReg.pending]: (state) => {
          state.data = null;
          state.status = 'loading';
          },
 
-         [fetchAuth.fulfilled]: (state, action) => {
+         [fetchReg.fulfilled]: (state, action) => {
              state.data = action.payload;
              state.status = 'loaded';
          },
 
 
-         [fetchAuth.rejected]: (state) => {
+         [fetchReg.rejected]: (state) => {
              state.data = null;
              state.status = 'error';
          }
     },
 });
 
-export const selectIsAuth = state => Boolean(state.auth.data);
+export const selectIsReg = state => Boolean(state.reg.data);
 
 
-export const authReducer = authSlice.reducer;
+export const regReducer = regSlice.reducer;
