@@ -28,7 +28,7 @@ const RegisterView = () => {
 
     const onSubmit = (values) => {
         dispatch(fetchReg(values));
-        if(!isReg){
+        if(isReg === false){
             setError("email",{
                 type: "server",
                 message: "The user with this E-mail address already exists"

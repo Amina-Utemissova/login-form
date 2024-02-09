@@ -26,8 +26,9 @@ const LoginView = () => {
     });
 
     const onSubmit = (values) => {
+        
         dispatch(fetchAuth(values));
-        if (!isAuth){
+        if (isAuth === false){
             reset();
         setError("email",{
             type: "server",
