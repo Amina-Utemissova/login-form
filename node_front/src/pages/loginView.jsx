@@ -26,23 +26,21 @@ const LoginView = () => {
     });
 
     const onSubmit = (values) => {
-        
-        dispatch(fetchAuth(values));
-        if (isAuth === false){
+        dispatch(fetchAuth(values))
+        .unwrap()
+        .catch((rejectedValueOrSerializedError) => {
             reset();
-        setError("email",{
-            type: "server",
-            message: "Incorrect email or passwort"
-        })
-        }
-        
+            setError("email",{
+                type: "server",
+                message: "The user with this E-mail address already exists"
+            });
+    })
     }
 
-    if (isAuth) {
+    if (isAuth === "loaded") {
         return <Navigate to="/" />;
     } 
-
-
+    
     return (
         <div className="page-wrapper">
             <div className="page-content-wrapper">
@@ -104,6 +102,7 @@ const LoginView = () => {
             </div>
         </div>
     )
+    
 }
 
 export default LoginView

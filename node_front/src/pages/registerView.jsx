@@ -13,7 +13,8 @@ const RegisterView = () => {
     
       
     const {register, 
-           handleSubmit, 
+           handleSubmit,
+           reset, 
             formState:{errors},
             setError,
         }  = useForm({
@@ -27,14 +28,15 @@ const RegisterView = () => {
     });
 
     const onSubmit = (values) => {
-        dispatch(fetchReg(values));
-        if(isReg === false){
+        dispatch(fetchReg(values))
+        .unwrap()
+        .catch((rejectedValueOrSerializedError) => {
+            reset();
             setError("email",{
                 type: "server",
                 message: "The user with this E-mail address already exists"
-            })
-        }
-        
+            });
+    })
     }
 
     if (isReg) {
